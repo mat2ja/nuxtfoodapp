@@ -1,7 +1,7 @@
 <template>
 	<section class="masthead" role="img" aria-label="Image Description">
 		<h1>Nuxt food app</h1>
-		<button>See restaurants ></button>
+		<button>See restaurants</button>
 	</section>
 </template>
 
