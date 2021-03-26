@@ -1,19 +1,15 @@
 <template>
 	<main class="container">
-		<h1>Hi from home page!</h1>
-		<p>Hi from home page!</p>
+		<AppHeader />
 	</main>
 </template>
 
 <script>
+import AppHeader from '@/components/AppHeader.vue';
+
 export default {
-	data() {
-		return {
-			name: 'matija',
-		};
+	components: {
+		AppHeader,
 	},
 };
 </script>
-
-<style>
-</style>
