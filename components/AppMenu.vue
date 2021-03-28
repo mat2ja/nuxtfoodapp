@@ -1,12 +1,8 @@
 <template>
 	<nav>
 		<ul>
-			<li>
-				<NuxtLink exact to="/">Home</NuxtLink>
-			</li>
-			<li>
-				<NuxtLink to="/about">About</NuxtLink>
-			</li>
+			<li><NuxtLink exact to="/">Home</NuxtLink></li>
+			<li><NuxtLink to="/restaurants">Restaurants</NuxtLink></li>
 		</ul>
 	</nav>
 </template>

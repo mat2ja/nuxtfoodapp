@@ -4,23 +4,26 @@
 			<AppMenu />
 			<Nuxt />
 		</div>
+		<AppFooter />
 	</div>
 </template>
 
 <script>
-import AppMenu from '@/components/AppMenu.vue';
+import AppMenu from "@/components/AppMenu.vue";
+import AppFooter from "@/components/AppFooter.vue";
 
 export default {
 	components: {
 		AppMenu,
+		AppFooter,
 	},
 };
 </script>
 
 <style>
 html {
-	font-family: 'Mulish', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-		'Helvetica Neue', Arial, sans-serif;
+	font-family: "Mulish", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, sans-serif;
 	font-weight: 300;
 	font-size: 16px;
 	word-spacing: 1px;
@@ -42,8 +45,8 @@ h1,
 h2,
 h3,
 h4 {
-	font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-		Roboto, 'Helvetica Neue', Arial, sans-serif;
+	font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+		Roboto, "Helvetica Neue", Arial, sans-serif;
 	font-weight: 600;
 }
 </style>
