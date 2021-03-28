@@ -1,5 +1,7 @@
 # nuxtfoodapp
 
+[Live Demo](https://nuxtfoodapp-mat2ja.vercel.app/)
+
 ## Build Setup
 
 ```bash
