@@ -3,17 +3,17 @@
 		<section
 			class="image"
 			:style="`background: url(/${currentItem.img}) no-repeat center center`"
-		></section>
+		/>
 
 		<section class="details">
 			<h1>{{ currentItem.item }}</h1>
 			<h3>Price: ${{ currentItem.price.toFixed(2) }}</h3>
 
 			<div class="quantity">
-				<input type="number" min="1" v-model="count" />
+				<input type="number" min="1" v-model="$v.count.$model" />
 				<button class="primary" @click="addToCart">
 					Add to cart
-					<span v-if="count && count > 0">
+					<span v-if="!$v.count.$invalid">
 						- ${{ combinedPrice }}</span
 					>
 				</button>
@@ -29,7 +29,7 @@
 						name="option"
 						:id="option"
 						:value="option"
-						v-model="itemOptions"
+						v-model="$v.itemOptions.$model"
 					/>
 					<label :for="option">{{ option }}</label>
 				</div>
@@ -45,7 +45,7 @@
 						name="addOn"
 						:id="addOn"
 						:value="addOn"
-						v-model="itemAddOns"
+						v-model="$v.itemAddons.$model"
 					/>
 					<label :for="addOn">{{ addOn }}</label>
 				</div>
@@ -56,6 +56,11 @@
 				Check out more
 				<nuxt-link to="/restaurants">restaurants</nuxt-link>
 			</AppToast>
+
+			<AppToast v-if="errors">
+				Please select options and
+				<br />addons before continuing
+			</AppToast>
 		</section>
 	</main>
 </template>
@@ -63,6 +68,7 @@
 <script>
 import { mapState } from 'vuex';
 import AppToast from '@/components/AppToast.vue';
+import { required, minValue, numeric } from 'vuelidate/lib/validators';
 
 export default {
 	components: {
@@ -73,10 +79,24 @@ export default {
 			id: this.$route.params.id,
 			count: 1,
 			itemOptions: [],
-			itemAddOns: [],
+			itemAddons: [],
 			itemSizeAndCost: [],
 			cartSubmitted: false,
+			errors: false,
 		};
+	},
+	validations: {
+		itemOptions: {
+			required,
+		},
+		itemAddons: {
+			required,
+		},
+		count: {
+			required,
+			numeric,
+			minValue: minValue(1),
+		},
 	},
 	computed: {
 		...mapState(['fooddata']),
@@ -91,26 +111,34 @@ export default {
 			return result;
 		},
 		combinedPrice() {
-			if (this.count) {
-				return (this.count * this.currentItem.price).toFixed(2);
-			} else {
-				return '';
-			}
+			return this.count
+				? (this.count * this.currentItem.price).toFixed(2)
+				: '';
 		},
 	},
 	methods: {
 		addToCart() {
-			if (!this.count || this.count <= 0) return;
-
 			let formOutput = {
 				item: this.currentItem.item,
 				count: this.count,
 				options: this.itemOptions,
-				addOns: this.itemAddOns,
+				addOns: this.itemAddons,
 				combinedPrice: this.combinedPrice,
 			};
-			this.cartSubmitted = true;
-			this.$store.commit('addToCart', formOutput)
+
+			let addOnError = this.$v.itemAddons.$invalid;
+			let optionError = this.currentItem.options
+				? this.$v.itemOptions.$invalid
+				: false;
+			let countError = this.$v.count.$invalid;
+
+			if (addOnError || optionError || countError) {
+				this.errors = true;
+			} else {
+				this.errors = false;
+				this.cartSubmitted = true;
+				this.$store.commit('addToCart', formOutput);
+			}
 		},
 	},
 };
